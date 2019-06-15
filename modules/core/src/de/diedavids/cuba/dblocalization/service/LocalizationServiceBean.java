@@ -90,27 +90,7 @@ public class LocalizationServiceBean implements LocalizationService {
         localization.setLocale(locale);
         localization.setKey(key);
         localization.setValue(value);
-
-        if (key.contains("/")) {
-            localization.setKeyGroup(createKeyGroupSlashSubstring(key));
-        } else if (key.contains(".")) {
-            localization.setKeyGroup(createKeyGroupDotSubstring(key));
-        } else {
-            localization.setKeyGroup(key);
-        }
         return localization;
     }
 
-    private String createKeyGroupSlashSubstring(String key) {
-        String[] splashSplit = key.split("/");
-        return splashSplit[0];
-    }
-
-    private String createKeyGroupDotSubstring(String key) {
-        String[] dotSplit = key.split("\\.");
-        List<String> strings = Arrays.asList(Arrays.copyOf(dotSplit, dotSplit.length - 1));
-
-        return strings.stream()
-                .collect(Collectors.joining("."));
-    }
 }

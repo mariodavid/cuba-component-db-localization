@@ -7,7 +7,10 @@ import de.diedavids.cuba.dblocalization.LocaleConverter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 @NamePattern(".%s (%s): %s|key,locale,value")
 @Table(name = "DDCDL_LOCALIZATION", indexes = {
@@ -65,6 +68,39 @@ public class Localization extends StandardEntity {
 
     public void setKey(String key) {
         this.key = key;
+    }
+
+    @PrePersist
+    public void prePersist() {
+        generateKeyGroup();
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        generateKeyGroup();
+    }
+
+    private void generateKeyGroup() {
+        if (key.contains("/")) {
+            setKeyGroup(createKeyGroupSlashSubstring(key));
+        } else if (key.contains(".")) {
+            setKeyGroup(createKeyGroupDotSubstring(key));
+        } else {
+            setKeyGroup(key);
+        }
+    }
+
+    private String createKeyGroupSlashSubstring(String key) {
+        String[] splashSplit = key.split("/");
+        return splashSplit[0];
+    }
+
+    private String createKeyGroupDotSubstring(String key) {
+        String[] dotSplit = key.split("\\.");
+        List<String> strings = Arrays.asList(Arrays.copyOf(dotSplit, dotSplit.length - 1));
+
+        return strings.stream()
+                .collect(Collectors.joining("."));
     }
 
 }

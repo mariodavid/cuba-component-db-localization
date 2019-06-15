@@ -10,7 +10,7 @@
         <param-value>
             classpath:de/diedavids/cuba/dblocalization/app.properties
             /WEB-INF/local.app.properties
-            "file:${catalina.base}/conf/app-core/local.app.properties"
+            "file:${catalina.base}/conf/dblocalization-core/local.app.properties"
         </param-value>
     </context-param>
     <!--Application components-->
