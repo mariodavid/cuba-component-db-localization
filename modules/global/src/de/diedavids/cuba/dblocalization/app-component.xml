@@ -27,5 +27,8 @@
         <property name="cuba.menuConfig" value="+de/diedavids/cuba/dblocalization/web-menu.xml"/>
         <property name="cuba.permissionConfig" value="+de/diedavids/cuba/dblocalization/web-permissions.xml"/>
         <property name="cuba.mainMessagePack" value="+de.diedavids.cuba.dblocalization.web"/>
+
+        <!-- activate remote search for messages in the backend -->
+        <property name="cuba.remoteMessagesSearchEnabled" value="true" />
     </module>
 </app-component>

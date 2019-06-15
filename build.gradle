@@ -29,7 +29,7 @@ apply(plugin: 'cuba')
 cuba {
     artifact {
         group = 'de.diedavids.cuba.dblocalization'
-        version = '0.1'
+        version = '0.1.0'
         isSnapshot = true
     }
     tomcat {
