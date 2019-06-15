@@ -2,7 +2,7 @@
 [ ![Download](https://api.bintray.com/packages/mariodavid/cuba-components/cuba-component-db-localization/images/download.svg) ](https://bintray.com/mariodavid/cuba-components/cuba-component-db-localization/_latestVersion)
 [![license](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg?style=flat)](http://www.apache.org/licenses/LICENSE-2.0)
 
-CUBA component - Db Localization
+CUBA component - DB Localization
 ======================
 
 This application component let's you manage your localization in the DB instead of properties files in the application.
