@@ -1,0 +1,1 @@
+drop table DDCDL_TRANSLATED_MESSAGE__U11453 if exists cascade ;

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<metadata xmlns="http://schemas.haulmont.com/cuba/metadata.xsd">
+
+    <datatypes>
+        <datatype
+                id="Locale"
+                class="de.diedavids.cuba.dblocalization.LocaleDatatype"
+                javaType="java.util.Locale"
+                sqlType="varchar(255)"
+        />
+    </datatypes>
+    <metadata-model root-package="de.diedavids.cuba.dblocalization" namespace="ddcdl">
+        <class>de.diedavids.cuba.dblocalization.entity.InitialLocalizationImport</class>
+    </metadata-model>
+
+</metadata>

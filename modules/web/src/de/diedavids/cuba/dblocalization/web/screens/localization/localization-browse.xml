@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
+        caption="msg://browseCaption"
+        focusComponent="localizationsTable"
+        messagesPack="de.diedavids.cuba.dblocalization.web.screens.localization">
+    <data>
+        <collection id="localizationsDc"
+                    class="de.diedavids.cuba.dblocalization.entity.Localization"
+                    view="_local">
+            <loader id="localizationsDl">
+                <query>
+                    <![CDATA[select e from ddcdl_Localization e]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <dialogMode height="600"
+                width="800"/>
+    <layout expand="localizationsTable"
+            spacing="true">
+        <filter id="filter"
+                applyTo="localizationsTable"
+                dataLoader="localizationsDl">
+            <properties include=".*"/>
+        </filter>
+        <groupTable id="localizationsTable"
+                    editable="true"
+                    width="100%"
+                    dataContainer="localizationsDc">
+            <actions>
+                <action id="create" type="create"/>
+                <action id="edit" type="edit"/>
+                <action id="remove" type="remove"/>
+                <action id="applyChanges" caption="msg://applyChanges" icon="CHECK" description="msg://applyChangesDescription"/>
+                <action id="initialImport" caption="msg://initialImport" icon="DOWNLOAD" description="msg://initialImportDescription"/>
+                <action id="removeAll" caption="msg://removeAll" icon="REMOVE" />
+            </actions>
+            <columns>
+                <group>
+                    <column id="keyGroup"/>
+                    <column id="key"/>
+                </group>
+                <column id="locale"/>
+                <column id="value" editable="true"/>
+            </columns>
+            <rowsCount/>
+            <buttonsPanel id="buttonsPanel"
+                          alwaysVisible="true">
+                <button id="createBtn" action="localizationsTable.create"/>
+                <button id="editBtn" action="localizationsTable.edit"/>
+                <button id="removeBtn" action="localizationsTable.remove"/>
+                <button id="applyChangesBtn" action="localizationsTable.applyChanges" />
+                <button id="initialImportBtn" action="localizationsTable.initialImport" />
+                <button id="removeAllBtn" action="localizationsTable.removeAll" />
+            </buttonsPanel>
+        </groupTable>
+        <hbox id="lookupActions" spacing="true" visible="false">
+            <button action="lookupSelectAction"/>
+            <button action="lookupCancelAction"/>
+        </hbox>
+    </layout>
+</window>

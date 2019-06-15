@@ -1,0 +1,1 @@
+drop index IDX_DDCDL_LOCALIZATION ;

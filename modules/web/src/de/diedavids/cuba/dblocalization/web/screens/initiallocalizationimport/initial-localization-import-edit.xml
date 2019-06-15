@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
+        caption="msg://editorCaption"
+        focusComponent="form"
+        messagesPack="de.diedavids.cuba.dblocalization.web.screens.initiallocalizationimport">
+    <data>
+        <instance id="initialLocalizationImportDc"
+                  class="de.diedavids.cuba.dblocalization.entity.InitialLocalizationImport"
+                  view="_local">
+            <loader/>
+        </instance>
+    </data>
+    <layout expand="editActions" spacing="true">
+        <hbox width="100%" expand="form" spacing="true">
+            <form id="form" dataContainer="initialLocalizationImportDc">
+                <column width="250px">
+                    <upload id="messagesFileField" fileStoragePutMode="IMMEDIATE" property="messagesFile"
+                            showFileName="true"/>
+                    <lookupField id="localeLookupField"
+                                 caption="msg://locale"
+                                 property="locale"
+                    />
+                </column>
+            </form>
+            <linkButton id="helpBtn" icon="icons/question-white.png" />
+        </hbox>
+
+        <hbox id="editActions" spacing="true">
+            <button action="windowCommitAndClose"/>
+            <button action="windowClose"/>
+        </hbox>
+    </layout>
+</window>
