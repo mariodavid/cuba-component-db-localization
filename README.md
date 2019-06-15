@@ -39,11 +39,66 @@ Once the application component is installed the following new Menu entry is avai
 
 
 ### Translation Overview
+
+The translation overview screen is designed to manage the translations. New translations can be created or existing translations
+can be changed.
+
 ![translations-overview](https://github.com/mariodavid/cuba-component-db-localization/blob/master/img/translations-overview.png)
 
-### Initial Translation Import
+Once the translations are created or changed, the button `Apply changes` will store the changes in the database. Furthermore
+the `Messages` bean will clear its cache and now serve the changed translations.
+
+### Initial Localization Import
+
+The initial localization import is available to import the existing localization files (messages.properties) from the [translations github repository](https://github.com/cuba-platform/translations/).
+
 ![initial-localization-import](https://github.com/mariodavid/cuba-component-db-localization/blob/master/img/initial-localization-import.png)
 
+The files from the translations repository have to be imported for every module and every language:
+
+```
+.
+└── modules
+    ├── core
+    │   └── src
+    │       └── com
+    │           └── haulmont
+    │               └── cuba
+    │                   └── core
+    │                       ├── messages.properties
+    │                       └── messages_de.properties
+    ├── desktop
+    │   └── src
+    │       └── com
+    │           └── haulmont
+    │               └── cuba
+    │                   └── desktop
+    │                       ├── messages.properties
+    │                       └── messages_de.properties
+    ├── global
+    │   └── src
+    │       └── com
+    │           └── haulmont
+    │               └── cuba
+    │                   ├── messages.properties
+    │                   └── messages_de.properties
+    ├── gui
+    │   └── src
+    │       └── com
+    │           └── haulmont
+    │               └── cuba
+    │                   └── gui
+    │                       ├── messages.properties
+    │                       └── messages_de.properties
+    └── web
+        └── src
+            └── com
+                └── haulmont
+                    └── cuba
+                        └── web
+                            ├── messages.properties
+                            └── messages_de.properties
+```
 
 ### Example usage
 To see this application component in action, check out this example: [cuba-example-using-db-localization](https://github.com/mariodavid/cuba-example-using-db-localization).
