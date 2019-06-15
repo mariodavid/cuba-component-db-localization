@@ -43,7 +43,7 @@ Once the application component is installed the following new Menu entry is avai
 The translation overview screen is designed to manage the translations. New translations can be created or existing translations
 can be changed.
 
-![translations-overview](https://github.com/mariodavid/cuba-component-db-localization/blob/master/img/translations-overview.png)
+![translations-overview](https://github.com/mariodavid/cuba-component-db-localization/blob/master/img/1-translations-overview.png)
 
 Once the translations are created or changed, the button `Apply changes` will store the changes in the database. Furthermore
 the `Messages` bean will clear its cache and now serve the changed translations.
@@ -52,7 +52,7 @@ the `Messages` bean will clear its cache and now serve the changed translations.
 
 The initial localization import is available to import the existing localization files (messages.properties) from the [translations github repository](https://github.com/cuba-platform/translations/).
 
-![initial-localization-import](https://github.com/mariodavid/cuba-component-db-localization/blob/master/img/initial-localization-import.png)
+![initial-localization-import](https://github.com/mariodavid/cuba-component-db-localization/blob/master/img/2-initial-localization-import.png)
 
 The files from the translations repository have to be imported for every module and every language:
 
