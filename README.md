@@ -100,5 +100,30 @@ The files from the translations repository have to be imported for every module 
                             └── messages_de.properties
 ```
 
+### Message Resolution
+
+The application component extends the existing message lookup functionality in the following form:
+
+It will lookup the message key in the database. If it is found, it will use that translation and cache the result
+in the corresponding module (core / web).
+
+If it is not found in the database, it will pass the message lookup on to the frameworks functionality, which will
+then try to find the message either in the classpath (via messages.properties files) or in the config directory.
+
+More information on the message lookup can be found in the CUBA documentation on [Messages Localization](https://doc.cuba-platform.com/manual-7.0/localization.html).
+
+#### Performance
+
+Since the messages are lookup up from the database, the lookup takes longer then regular message lookups.
+Furthermore it passes on message lookups on from the frontend layer to the backend layer, so that the DB can be taken into
+consideration.
+
+Practically this means, that in case a screen is opened up for the first time after the application server starts,
+it will take longer to load. Once the screen was loaded, the messages are cached (either in the backend or the frontend),
+which means that the speed from that moment on is back to normal.
+
+In a phase of development, were a lot of application restarts occur, this slows down the runtime of the application.
+Therefore it is a good idea, to turn off the application component during initial development phases.
+
 ### Example usage
 To see this application component in action, check out this example: [cuba-example-using-db-localization](https://github.com/mariodavid/cuba-example-using-db-localization).
