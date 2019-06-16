@@ -6,9 +6,12 @@ cache:
   - "$HOME/.gradle/caches/"
   - "$HOME/.gradle/wrapper/"
 before_install:
-- chmod +x ./gradlew
+  - chmod +x ./gradlew
+  - "./gradlew --no-daemon startDb"
+install:
+  - "./gradlew --no-daemon createTestDb"
 script:
-- "./gradlew --no-daemon check"
+  - "./gradlew --no-daemon check"
 env:
   global:
   - secure: f7sdLuq//TejWKC/1sSrtgdgZe0KiUTlT4kfWkWO0sZ/XcLsuvz9PMO0p1C/sWKBZlW0gXV4FBvSsntEaRW3g6JCW5k9Mg1n9t6viQzSusfzuUesInG2k5GnqNgUmdnqYGR1Kj2P9VOKiHGv9hckPXFaSGeoLZ/oK9MlCNJuIEdG8ql4WJr3ptIZb1m9uaBfZjq7fYTQErLIkiOElTY9F/sgp0EAlp67AGcy0aOsgrfdYzQKQ0UTF2fClWaKlX3yLW3DFBAa2+QONCp2LLKtfLmTu4Rg0dV/Feo3bMdAi1uU/a4nGsaQzbHLDiRiwVwSnRz5MXsyneJA4PcPcojbtXjXZleIzD/gsf8YtTWWqITQ1M5oumg6hbrtJDXfNqyHHPwIUpxb8LLuEstJdLm8WcfE5tXiVhBoN/bY34riNCROzD9gO82D4hGeiIGqEMNzlWu0dn/YDWsN/gm7b+UdcyDH8NdiBr2pAWTNaS1sH9fr+ethAs4EpDAnxVBt9WOeD6N5v9kEKZPdDQ2jtwH3/xk3tpMLetCoWobzFB0r7UZLc+yS8RgIIxEWsoIaLqnmlLn+3WnfdLh247AOgrng0k2q+trEIrvkgfWuqu3ly96v4weWivgPnloq+rxyOLClHbSiUzESc9Kux0c127vWKLGctIJaRXwzEezXrpgPTBE=

@@ -114,6 +114,29 @@ configure(coreModule) {
         appJars(modulePrefix + '-global', modulePrefix + '-core')
     }
 
+
+    def hsqlDbName = 'ddcdl'
+    def hsqlPort = 9010
+
+    task startDb(description: 'Starts local HSQLDB server', type: CubaHsqlStart) {
+        dbPort = hsqlPort
+        dbName = hsqlDbName
+    }
+
+    task stopDb(description: 'Stops local HSQLDB server', type: CubaHsqlStop) {
+        dbPort = hsqlPort
+        dbName = hsqlDbName
+    }
+
+    task removeDb(description: 'Removes local HSQL database', type: Delete) {
+        delete new File("$rootProject.projectDir/data")
+    }
+
+    task killDb(description: "Kill local HSQLDB server process running on port $hsqlPort", type: CubaKillProcess) {
+        port = hsqlPort
+    }
+
+
     task createDb(dependsOn: assembleDbScripts, description: 'Creates local database', type: CubaDbCreation) {
         dbms = 'hsql'
         host = 'localhost:9010'
@@ -128,6 +151,15 @@ configure(coreModule) {
         dbName = 'ddcdl'
         dbUser = 'sa'
         dbPassword = ''
+    }
+
+    task createTestDb(dependsOn: assembleDbScripts, description: 'Creates local HSQL database', type: CubaDbCreation) {
+        dbms = 'hsql'
+        host = 'localhost:9010'
+        dbName = 'ddcdl'
+        dbUser = 'sa'
+        dbPassword = ''
+        //auxiliaryScript = file('test/de/diedavids/cuba/taggable/create-db.sql')
     }
 }
 
