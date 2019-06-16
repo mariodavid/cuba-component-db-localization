@@ -13,8 +13,16 @@ buildscript {
     }
     dependencies {
         classpath "com.haulmont.gradle:cuba-plugin:$cubaVersion"
+
+        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.0"
     }
 }
+
+
+plugins {
+    id 'net.researchgate.release' version '2.6.0'
+}
+
 
 def modulePrefix = 'dblocalization'
 
@@ -29,11 +37,52 @@ apply(plugin: 'cuba')
 cuba {
     artifact {
         group = 'de.diedavids.cuba.dblocalization'
-        version = '0.1.0'
-        isSnapshot = true
+        version = project.properties['version'].replaceAll('-SNAPSHOT', '')
+        isSnapshot = project.properties['version'].contains('-SNAPSHOT')
     }
     tomcat {
         dir = "$project.rootDir/deploy/tomcat"
+    }
+}
+
+
+subprojects {
+    apply plugin: 'com.jfrog.bintray'
+
+    bintray {
+        user = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : System.getenv('UPLOAD_REPOSITORY_USERNAME')
+        key = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey') : System.getenv('UPLOAD_REPOSITORY_PASSWORD')
+
+        configurations = ['archives']
+
+        publish = true
+
+        override = false
+
+        // metadata
+        pkg {
+            repo = 'cuba-components'
+            name = 'cuba-component-db-localization'
+            desc = 'CUBA platform application component for managing localizations in the database'
+            userOrg = 'mariodavid'
+
+            websiteUrl = 'https://github.com/mariodavid/cuba-component-db-localization'
+            issueTrackerUrl = 'https://github.com/mariodavid/cuba-component-db-localization/issues'
+            vcsUrl = 'https://github.com/mariodavid/cuba-component-db-localization.git'
+
+            licenses = ["Apache-2.0"]
+
+            labels = ['db-localization', 'cuba-patform', 'cuba-component']
+            githubRepo = 'mariodavid/cuba-component-db-localization'
+            githubReleaseNotesFile = 'CHANGELOG.md'
+
+            version {
+                name = "${cuba.artifact.version}"
+                desc = ''
+                released = new Date()
+                vcsTag = "${cuba.artifact.version}"
+            }
+        }
     }
 }
 
@@ -159,7 +208,7 @@ configure(coreModule) {
         dbName = 'ddcdl'
         dbUser = 'sa'
         dbPassword = ''
-        //auxiliaryScript = file('test/de/diedavids/cuba/taggable/create-db.sql')
+        //auxiliaryScript = file('test/de/diedavids/cuba/db-localization/create-db.sql')
     }
 }
 
