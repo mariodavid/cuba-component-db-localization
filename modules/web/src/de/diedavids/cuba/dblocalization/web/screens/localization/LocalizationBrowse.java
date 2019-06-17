@@ -6,13 +6,12 @@ import com.haulmont.cuba.core.global.Messages;
 import com.haulmont.cuba.gui.Notifications;
 import com.haulmont.cuba.gui.ScreenBuilders;
 import com.haulmont.cuba.gui.actions.list.EditAction;
-import com.haulmont.cuba.gui.components.Action;
-import com.haulmont.cuba.gui.components.Button;
-import com.haulmont.cuba.gui.components.GroupTable;
-import com.haulmont.cuba.gui.components.Table;
+import com.haulmont.cuba.gui.components.*;
 import com.haulmont.cuba.gui.model.CollectionContainer;
 import com.haulmont.cuba.gui.model.DataContext;
 import com.haulmont.cuba.gui.screen.*;
+import com.haulmont.cuba.gui.screen.LookupComponent;
+import de.diedavids.cuba.dblocalization.config.DbMessagesConfig;
 import de.diedavids.cuba.dblocalization.entity.InitialLocalizationImport;
 import de.diedavids.cuba.dblocalization.entity.Localization;
 import de.diedavids.cuba.dblocalization.service.LocalizationService;
@@ -46,7 +45,7 @@ public class LocalizationBrowse extends StandardLookup<Localization> {
     @Inject
     protected DataContext dataContext;
     @Inject
-    protected DataManager dataManager;
+    protected DbMessagesConfig dbMessagesConfig;
 
 
     @Subscribe("localizationsTable.initialImport")
@@ -77,13 +76,22 @@ public class LocalizationBrowse extends StandardLookup<Localization> {
     @Subscribe("localizationsTable.applyChanges")
     protected void onLocalizationsTableApplyChanges(Action.ActionPerformedEvent event) {
 
-        dataContext.commit();
+        if (dbMessagesConfig.getEnabled()) {
+            dataContext.commit();
 
-        clearMessageCache();
+            clearMessageCache();
 
-        notifications.create(Notifications.NotificationType.TRAY)
-                .withCaption(messageBundle.formatMessage("changesApplied"))
-                .show();
+            notifications.create(Notifications.NotificationType.TRAY)
+                    .withCaption(messageBundle.getMessage("changesApplied"))
+                    .show();
+        }
+        else {
+            notifications.create(Notifications.NotificationType.WARNING)
+                    .withContentMode(ContentMode.HTML)
+                    .withCaption(messageBundle.getMessage("dblocalizationNotActive"))
+                    .show();
+        }
+
     }
 
     private void clearMessageCache() {

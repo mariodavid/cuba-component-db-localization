@@ -1,71 +1,57 @@
 package de.diedavids.cuba.dblocalization.core;
 
-import com.haulmont.cuba.core.Persistence;
 import com.haulmont.cuba.core.global.DataManager;
+import com.haulmont.cuba.core.sys.AbstractMessages;
 import com.haulmont.cuba.core.sys.AppContext;
 import com.haulmont.cuba.core.sys.MessagesImpl;
-import com.haulmont.cuba.security.app.Authenticated;
 import com.haulmont.cuba.security.app.Authentication;
+import de.diedavids.cuba.dblocalization.config.DbMessagesConfig;
 import de.diedavids.cuba.dblocalization.entity.Localization;
-import org.springframework.context.ApplicationContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
-import java.util.HashSet;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.Set;
 
 public class DbMessagesImpl extends MessagesImpl {
 
+    private static final Logger log = LoggerFactory.getLogger(DbMessagesImpl.class);
 
     @Inject
     private DataManager dataManager;
 
-
     @Inject
     Authentication authentication;
 
+    @Inject
+    DbMessagesConfig dbMessagesConfig;
 
-    @Override
-    protected String internalGetMessage(String packs, String key, Locale locale, String defaultValue, boolean searchMainIfNotFound) {
-
-        locale = messageTools.trimLocale(locale);
-
-        String cacheKey = makeCacheKey(packs, key, locale, locale);
-
-        String msg = strCache.get(cacheKey);
-        if (msg != null)
-            return msg;
-
-        String notFound = notFoundCache.get(cacheKey);
-        if (notFound != null)
-            return defaultValue;
-
-        msg = searchMessage(packs, key, locale, locale, new HashSet<>());
-        if (msg != null) {
-            cache(cacheKey, msg);
-            return msg;
-        }
-
-        if (searchMainIfNotFound) {
-            String tmpCacheKey = makeCacheKey(mainMessagePack, key, locale, locale);
-            msg = searchMessage(tmpCacheKey, key, locale, locale, new HashSet<>());
-            if (msg != null) {
-                cache(cacheKey, msg);
-                return msg;
-            }
-        }
-
-        notFoundCache.put(cacheKey, key);
-        return defaultValue;
-    }
 
     @Override
     protected String searchOnePack(String pack, String key, Locale locale, Locale truncatedLocale, Set<String> passedPacks) {
 
         if (AppContext.isReady()) {
 
+            Optional<Localization> translatedMessage = searchKeyInDatabase(key, locale);
+            if (translatedMessage.isPresent()) {
+                Localization localization = translatedMessage.get();
+                String value = localization.getValue();
+                log.debug(String.format("DB based message found for key '%s': '%s' (%s)", key, value, localization.getId()));
+                return value;
+            } else {
+                return super.searchOnePack(pack, key, locale, truncatedLocale, passedPacks);
+            }
+        } else {
+            return super.searchOnePack(pack, key, locale, truncatedLocale, passedPacks);
+        }
+    }
 
+    private Optional<Localization> searchKeyInDatabase(String key, Locale locale) {
+
+        if (dbMessagesConfig.getEnabled()) {
+            log.debug("DB based message lookup active. DB Lookup will be executed");
             authentication.begin();
 
             Optional<Localization> translatedMessage = dataManager.load(Localization.class)
@@ -75,15 +61,11 @@ public class DbMessagesImpl extends MessagesImpl {
                     .optional();
 
             authentication.end();
-            if (translatedMessage.isPresent()) {
-                return translatedMessage.get().getValue();
-            } else {
-                return super.searchOnePack(pack, key, locale, truncatedLocale, passedPacks);
-            }
-
-        } else {
-            return super.searchOnePack(pack, key, locale, truncatedLocale, passedPacks);
+            return translatedMessage;
         }
-
+        else {
+            log.info("DB based message lookup inactive. Fallback to default behavior.");
+            return Optional.empty();
+        }
     }
 }

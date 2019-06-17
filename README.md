@@ -37,6 +37,18 @@ dependencies {
 
 Once the application component is installed the following new Menu entry is available in the Administration menu: `Localizations`.
 
+![overview](https://github.com/mariodavid/cuba-component-db-localization/blob/master/img/0-overview.gif)
+
+
+### Application properties
+
+In order to activate the DB based lookup for message keys, the following configuration property has to be placed in `web-app.properties` and `app.properties`:
+
+```
+dblocalization.enabled = true
+```
+
+By default, the DB based lookup is deactivated
 
 ### Translation Overview
 

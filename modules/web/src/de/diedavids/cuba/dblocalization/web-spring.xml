@@ -17,4 +17,5 @@
         </property>
     </bean>
 
+    <bean name="cuba_Messages" class="de.diedavids.cuba.dblocalization.web.DbMessagesClientImpl" />
 </beans>
