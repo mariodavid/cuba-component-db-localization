@@ -127,3 +127,16 @@ Therefore it is a good idea, to turn off the application component during initia
 
 ### Example usage
 To see this application component in action, check out this example: [cuba-example-using-db-localization](https://github.com/mariodavid/cuba-example-using-db-localization).
+
+
+
+## Supported DBMS
+
+This application component ships with DB init / update scripts for the following DBMS:
+
+* HSQLDB
+* PostgreSQL
+
+Any other DBMS is still supported, but the DDL statements have to be provided manually. CUBA Studio automatically
+generates the DDL scripts when the application component is used but for the selected DBMS no DDL scripts are automatically
+delivered.
