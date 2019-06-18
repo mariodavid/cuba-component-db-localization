@@ -48,7 +48,7 @@ In order to activate the DB based lookup for message keys, the following configu
 dblocalization.enabled = true
 ```
 
-By default, the DB based lookup is deactivated
+By default, the DB based lookup is deactivated.
 
 ### Translation Overview
 

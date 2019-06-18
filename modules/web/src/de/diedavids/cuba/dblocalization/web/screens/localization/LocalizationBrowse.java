@@ -59,19 +59,18 @@ public class LocalizationBrowse extends StandardLookup<Localization> {
     @Subscribe
     protected void onBeforeShow(BeforeShowEvent event) {
         localizationsTable.sort("key", Table.SortDirection.ASCENDING);
-
-
     }
 
     @Subscribe(id = "localizationsDc", target = Target.DATA_CONTAINER)
     protected void onLocalizationsDcCollectionChange(CollectionContainer.CollectionChangeEvent<Localization> event) {
-
         localizationsTable.expandAll();
     }
 
-
-    
-    
+    @Subscribe("localizationsTable.removeAll")
+    protected void onLocalizationsTableRemoveAll(Action.ActionPerformedEvent event) {
+        localizationService.removeAll();
+        getScreenData().loadAll();
+    }
 
     @Subscribe("localizationsTable.applyChanges")
     protected void onLocalizationsTableApplyChanges(Action.ActionPerformedEvent event) {
@@ -91,7 +90,6 @@ public class LocalizationBrowse extends StandardLookup<Localization> {
                     .withCaption(messageBundle.getMessage("dblocalizationNotActive"))
                     .show();
         }
-
     }
 
     private void clearMessageCache() {
@@ -99,13 +97,5 @@ public class LocalizationBrowse extends StandardLookup<Localization> {
         localizationService.clearCache();
     }
 
-    @Subscribe("localizationsTable.removeAll")
-    protected void onLocalizationsTableRemoveAll(Action.ActionPerformedEvent event) {
-        localizationService.removeAll();
-        getScreenData().loadAll();
-    }
-
-    
-    
 
 }
