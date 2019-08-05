@@ -38,7 +38,9 @@ public class DbMessagesImpl extends MessagesImpl {
             if (translatedMessage.isPresent()) {
                 Localization localization = translatedMessage.get();
                 String value = localization.getValue();
-                log.debug(String.format("DB based message found for key '%s': '%s' (%s)", key, value, localization.getId()));
+                if (log.isDebugEnabled()) {
+                    log.debug(String.format("DB based message found for key '%s': '%s' (%s)", key, value, localization.getId()));
+                }
                 return value;
             } else {
                 return super.searchOnePack(pack, key, locale, truncatedLocale, passedPacks);
