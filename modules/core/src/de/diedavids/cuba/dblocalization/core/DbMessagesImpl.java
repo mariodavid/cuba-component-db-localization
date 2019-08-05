@@ -1,7 +1,6 @@
 package de.diedavids.cuba.dblocalization.core;
 
 import com.haulmont.cuba.core.global.DataManager;
-import com.haulmont.cuba.core.sys.AbstractMessages;
 import com.haulmont.cuba.core.sys.AppContext;
 import com.haulmont.cuba.core.sys.MessagesImpl;
 import com.haulmont.cuba.security.app.Authentication;
@@ -28,6 +27,7 @@ public class DbMessagesImpl extends MessagesImpl {
     @Inject
     DbMessagesConfig dbMessagesConfig;
 
+    private long nextNotification = 0;
 
     @Override
     protected String searchOnePack(String pack, String key, Locale locale, Locale truncatedLocale, Set<String> passedPacks) {
@@ -49,22 +49,25 @@ public class DbMessagesImpl extends MessagesImpl {
     }
 
     private Optional<Localization> searchKeyInDatabase(String key, Locale locale) {
-
         if (dbMessagesConfig.getEnabled()) {
             log.debug("DB based message lookup active. DB Lookup will be executed");
             authentication.begin();
-
             Optional<Localization> translatedMessage = dataManager.load(Localization.class)
                     .query("select e from ddcdl_Localization e where e.key = :key and e.locale = :locale")
                     .parameter("key", key)
                     .parameter("locale", locale)
                     .optional();
-
             authentication.end();
             return translatedMessage;
-        }
-        else {
-            log.info("DB based message lookup inactive. Fallback to default behavior.");
+        } else {
+            if (nextNotification < System.currentTimeMillis()) {
+                log.info("DB based message lookup inactive. Fallback to default behavior.");
+                if (dbMessagesConfig.getLogWarningDelay() < 1000) {
+                    nextNotification = Long.MAX_VALUE;
+                } else {
+                    nextNotification = System.currentTimeMillis() + dbMessagesConfig.getLogWarningDelay();
+                }
+            }
             return Optional.empty();
         }
     }
