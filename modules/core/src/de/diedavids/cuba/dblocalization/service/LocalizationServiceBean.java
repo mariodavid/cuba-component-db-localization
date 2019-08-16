@@ -1,11 +1,9 @@
 package de.diedavids.cuba.dblocalization.service;
 
-import com.haulmont.cuba.core.EntityManager;
 import com.haulmont.cuba.core.Persistence;
 import com.haulmont.cuba.core.entity.FileDescriptor;
 import com.haulmont.cuba.core.global.*;
 import de.diedavids.cuba.dblocalization.entity.Localization;
-import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -15,8 +13,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Enumeration;
+import java.util.Locale;
+import java.util.Properties;
 
 @Service(LocalizationService.NAME)
 public class LocalizationServiceBean implements LocalizationService {
@@ -40,19 +39,14 @@ public class LocalizationServiceBean implements LocalizationService {
 
     @Override
     public void initialImport(FileDescriptor fileDescriptor, Locale locale) {
-
-
         CommitContext commitContext = new CommitContext();
 
-        try {
-            InputStream stream = fileLoader.openStream(fileDescriptor);
-
-            try (InputStreamReader reader = new InputStreamReader(stream, StandardCharsets.UTF_8)) {
+        try (InputStream stream = fileLoader.openStream(fileDescriptor);
+             InputStreamReader reader = new InputStreamReader(stream, StandardCharsets.UTF_8);){
                 Properties properties = new Properties();
                 properties.load(reader);
 
                 Enumeration<?> propertyNames = properties.propertyNames();
-
 
                 while (propertyNames.hasMoreElements()) {
                     String key = (String) propertyNames.nextElement();
@@ -65,13 +59,8 @@ public class LocalizationServiceBean implements LocalizationService {
                             )
                     );
                 }
-
-
                 dataManager.commit(commitContext);
 
-            } finally {
-                IOUtils.closeQuietly(stream);
-            }
         } catch (FileStorageException | IOException e) {
             e.printStackTrace();
         }
