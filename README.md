@@ -16,7 +16,7 @@ screens, translations can be easily managed by people outside of development.
 
 | Platform Version | Add-on Version |
 | ---------------- | -------------- |
-| 7.0.x            | 0.1.x          |
+| 7.0.x            | 0.1.x - 0.2.x  |
 
 The latest version is: [ ![Download](https://api.bintray.com/packages/mariodavid/cuba-components/cuba-component-db-localization/images/download.svg) ](https://bintray.com/mariodavid/cuba-components/cuba-component-db-localization/_latestVersion)
 
