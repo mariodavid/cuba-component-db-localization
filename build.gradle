@@ -96,7 +96,7 @@ dependencies {
     appComponent("com.haulmont.cuba:cuba-global:$cubaVersion")
 }
 
-def mysql = 'mysql:mysql-connector-java:8.0.15'
+def hsql = 'org.hsqldb:hsqldb:2.4.1'
 
 
 allprojects {
@@ -186,8 +186,8 @@ configure(coreModule) {
     dependencies {
         compile(globalModule)
         compileOnly(servletApi)
-        jdbc(mysql)
-        testRuntime(mysql)
+        jdbc(hsql)
+        testRuntime(hsql)
     }
 
     task cleanConf(description: 'Cleans up conf directory') {
@@ -230,21 +230,19 @@ configure(coreModule) {
 
 
     task createDb(dependsOn: assembleDbScripts, description: 'Creates local database', type: CubaDbCreation) {
-        dbms = 'mysql'
-        host = 'localhost'
+        dbms = 'hsql'
+        host = 'localhost:9010'
         dbName = 'ddcdl'
-        dbUser = 'root'
-        dbPassword = 'mysql'
-        connectionParams = '?useSSL=false&allowMultiQueries=true&allowPublicKeyRetrieval=true'
+        dbUser = 'sa'
+        dbPassword = ''
     }
 
     task updateDb(dependsOn: assembleDbScripts, description: 'Updates local database', type: CubaDbUpdate) {
-        dbms = 'mysql'
-        host = 'localhost'
+        dbms = 'hsql'
+        host = 'localhost:9010'
         dbName = 'ddcdl'
-        dbUser = 'root'
-        dbPassword = 'mysql'
-        connectionParams = '?useSSL=false&allowMultiQueries=true&allowPublicKeyRetrieval=true'
+        dbUser = 'sa'
+        dbPassword = ''
     }
 
     task createTestDb(dependsOn: assembleDbScripts, description: 'Creates local HSQL database', type: CubaDbCreation) {
