@@ -7,10 +7,10 @@
       maxTotal="20"
       maxIdle="2"
       maxWaitMillis="5000"
-      driverClassName="org.hsqldb.jdbc.JDBCDriver"
-      url="jdbc:hsqldb:hsql://localhost:9010/ddcdl"
-      username="sa"
-      password=""/>
+      driverClassName="com.mysql.jdbc.Driver"
+      url="jdbc:mysql://localhost/ddcdl?useSSL=false&amp;allowMultiQueries=true&amp;allowPublicKeyRetrieval=true"
+      username="root"
+      password="mysql"/>
 
     <!-- Switch off session serialization -->
     <Manager pathname=""/>

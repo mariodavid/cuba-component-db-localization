@@ -1,5 +1,5 @@
 buildscript {
-    ext.cubaVersion = '7.0.7'
+    ext.cubaVersion = '7.1.0'
     repositories {
 
         mavenLocal()
@@ -96,8 +96,7 @@ dependencies {
     appComponent("com.haulmont.cuba:cuba-global:$cubaVersion")
 }
 
-def hsql = 'org.hsqldb:hsqldb:2.4.1'
-
+def mysql = 'mysql:mysql-connector-java:8.0.15'
 
 
 allprojects {
@@ -187,8 +186,8 @@ configure(coreModule) {
     dependencies {
         compile(globalModule)
         compileOnly(servletApi)
-        jdbc(hsql)
-        testRuntime(hsql)
+        jdbc(mysql)
+        testRuntime(mysql)
     }
 
     task cleanConf(description: 'Cleans up conf directory') {
@@ -231,19 +230,21 @@ configure(coreModule) {
 
 
     task createDb(dependsOn: assembleDbScripts, description: 'Creates local database', type: CubaDbCreation) {
-        dbms = 'hsql'
-        host = 'localhost:9010'
+        dbms = 'mysql'
+        host = 'localhost'
         dbName = 'ddcdl'
-        dbUser = 'sa'
-        dbPassword = ''
+        dbUser = 'root'
+        dbPassword = 'mysql'
+        connectionParams = '?useSSL=false&allowMultiQueries=true&allowPublicKeyRetrieval=true'
     }
 
     task updateDb(dependsOn: assembleDbScripts, description: 'Updates local database', type: CubaDbUpdate) {
-        dbms = 'hsql'
-        host = 'localhost:9010'
+        dbms = 'mysql'
+        host = 'localhost'
         dbName = 'ddcdl'
-        dbUser = 'sa'
-        dbPassword = ''
+        dbUser = 'root'
+        dbPassword = 'mysql'
+        connectionParams = '?useSSL=false&allowMultiQueries=true&allowPublicKeyRetrieval=true'
     }
 
     task createTestDb(dependsOn: assembleDbScripts, description: 'Creates local HSQL database', type: CubaDbCreation) {
@@ -305,9 +306,6 @@ configure(webModule) {
 }
 
 
-
-
-
 task undeploy(type: Delete, dependsOn: ":${modulePrefix}-web:cleanConf") {
     delete("$cuba.tomcat.dir/shared")
     delete("$cuba.tomcat.dir/webapps/${modulePrefix}-core")
@@ -324,7 +322,6 @@ task restart(dependsOn: ['stop', ":${modulePrefix}-core:deploy", ":${modulePrefi
         start.execute()
     }
 }
-
 
 
 clean {
