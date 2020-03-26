@@ -16,6 +16,7 @@ screens, translations can be easily managed by people outside of development.
 
 | Platform Version | Add-on Version |
 | ---------------- | -------------- |
+| 7.1.x            | 0.3.x          |
 | 7.0.x            | 0.1.x - 0.2.x  |
 
 The latest version is: [ ![Download](https://api.bintray.com/packages/mariodavid/cuba-components/cuba-component-db-localization/images/download.svg) ](https://bintray.com/mariodavid/cuba-components/cuba-component-db-localization/_latestVersion)
@@ -31,6 +32,23 @@ dependencies {
   appComponent("de.diedavids.cuba.dblocalization:dblocalization-global:*addon-version*")
 }
 ```
+
+### Example usage
+
+To see this application component in action, check out this example: [cuba-example-using-db-localization](https://github.com/mariodavid/cuba-example-using-db-localization).
+
+
+## Supported DBMS
+
+This application component ships with DB init / update scripts for the following DBMS:
+
+* HSQLDB
+* PostgreSQL
+* MySQL
+
+Any other DBMS is still supported, but the DDL statements have to be provided manually. CUBA Studio automatically
+generates the DDL scripts when the application component is used but for the selected DBMS no DDL scripts are automatically
+delivered.
 
 
 ## Using the application component
@@ -137,18 +155,3 @@ which means that the speed from that moment on is back to normal.
 In a phase of development, were a lot of application restarts occur, this slows down the runtime of the application.
 Therefore it is a good idea, to turn off the application component during initial development phases.
 
-### Example usage
-To see this application component in action, check out this example: [cuba-example-using-db-localization](https://github.com/mariodavid/cuba-example-using-db-localization).
-
-
-
-## Supported DBMS
-
-This application component ships with DB init / update scripts for the following DBMS:
-
-* HSQLDB
-* PostgreSQL
-
-Any other DBMS is still supported, but the DDL statements have to be provided manually. CUBA Studio automatically
-generates the DDL scripts when the application component is used but for the selected DBMS no DDL scripts are automatically
-delivered.

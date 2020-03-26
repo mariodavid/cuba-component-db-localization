@@ -1,5 +1,5 @@
 buildscript {
-    ext.cubaVersion = '7.0.7'
+    ext.cubaVersion = '7.1.0'
     repositories {
 
         mavenLocal()
@@ -97,7 +97,6 @@ dependencies {
 }
 
 def hsql = 'org.hsqldb:hsqldb:2.4.1'
-
 
 
 allprojects {
@@ -305,9 +304,6 @@ configure(webModule) {
 }
 
 
-
-
-
 task undeploy(type: Delete, dependsOn: ":${modulePrefix}-web:cleanConf") {
     delete("$cuba.tomcat.dir/shared")
     delete("$cuba.tomcat.dir/webapps/${modulePrefix}-core")
@@ -324,7 +320,6 @@ task restart(dependsOn: ['stop', ":${modulePrefix}-core:deploy", ":${modulePrefi
         start.execute()
     }
 }
-
 
 
 clean {
